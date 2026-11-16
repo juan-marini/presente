@@ -1,0 +1,36 @@
+services:
+  mysql-alunos:
+    container_name: mysql-alunos
+    image: mysql:8.4.6
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: presente_alunos
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql-alunos-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-proot"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  mysql-casos:
+    container_name: mysql-casos
+    image: mysql:8.4.6
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: presente_casos
+    ports:
+      - "3308:3306"
+    volumes:
+      - mysql-casos-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-proot"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  mysql-alunos-data:
+  mysql-casos-data:
