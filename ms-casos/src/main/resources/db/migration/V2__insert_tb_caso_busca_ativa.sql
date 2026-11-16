@@ -1,0 +1,6 @@
+INSERT INTO tb_caso_busca_ativa (aluno_id, motivo, resumo, encaminhamento, prioridade, agente_responsavel, status, data_abertura, data_encerramento) VALUES
+(2, 'CUIDADO_FAMILIAR', 'A mãe trabalha em turno integral e a aluna cuida dos dois irmãos menores durante o período das aulas.', 'CRAS', 'NORMAL', 'Mariana Teixeira', 'EM_CONTATO', '2026-10-20', NULL),
+(3, 'TRANSPORTE', 'O aluno deixou de ir à escola por falta de dinheiro para a condução. Família foi orientada sobre o passe livre estudantil.', 'PASSE_LIVRE', 'NORMAL', 'Carlos Henrique Dias', 'RESOLVIDO', '2026-09-02', '2026-09-30'),
+(5, 'TRABALHO', 'Responsável informou, em crioulo haitiano, que o aluno passou a trabalhar em uma obra para ajudar na renda da casa.', 'CRAS', 'NORMAL', 'Carlos Henrique Dias', 'ENCAMINHADO', '2026-10-08', NULL),
+(8, 'BULLYING', 'A aluna relatou episódios de intimidação por colegas da turma e não quer mais frequentar as aulas.', 'ORIENTACAO_ESCOLAR', 'URGENTE', 'Mariana Teixeira', 'ACOMPANHANDO', '2026-09-25', NULL),
+(9, 'MUDANCA', 'Família mudou de endereço sem informar a escola. Após várias tentativas de contato, não houve retorno.', 'ORIENTACAO_ESCOLAR', 'NORMAL', 'Carlos Henrique Dias', 'ENCERRADO_SEM_RETORNO', '2026-08-15', '2026-10-01');
