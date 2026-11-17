@@ -151,13 +151,22 @@ Aguarde os dois containers (`mysql-alunos` e `mysql-casos`) aparecerem como `hea
 
 Abra um terminal para cada serviço, a partir da raiz do repositório.
 
-**Windows (PowerShell ou CMD):**
+**Windows (CMD):**
 
-```bash
+```bat
 cd eureka-server && mvnw.cmd spring-boot:run
 cd api-gateway   && mvnw.cmd spring-boot:run
 cd ms-alunos     && mvnw.cmd spring-boot:run
 cd ms-casos      && mvnw.cmd spring-boot:run
+```
+
+**Windows (PowerShell):**
+
+```powershell
+cd eureka-server; .\mvnw.cmd spring-boot:run
+cd api-gateway;   .\mvnw.cmd spring-boot:run
+cd ms-alunos;     .\mvnw.cmd spring-boot:run
+cd ms-casos;      .\mvnw.cmd spring-boot:run
 ```
 
 **Linux, macOS ou Git Bash:**
@@ -230,6 +239,8 @@ A especificação em JSON fica em `/v3/api-docs`. Todos os endpoints podem ser e
 
 ## Roteiro de teste (via Gateway)
 
+Os comandos `curl` abaixo são para Git Bash, Linux ou macOS. No Windows, rode-os no **Git Bash**, porque no PowerShell `curl` é um alias de `Invoke-WebRequest` e no CMD as aspas simples não funcionam. Todos os passos também podem ser feitos pelo Swagger UI ou pelo Postman.
+
 A carga inicial do Flyway cria 10 alunos e 5 casos coerentes entre os dois bancos. Os alunos 2, 5 e 8 estão em busca ativa e têm caso em andamento, o aluno 3 retornou e o aluno 9 evadiu.
 
 **1. Listar a carga inicial**
@@ -250,7 +261,7 @@ curl http://localhost:8082/api/v1/casos/1
 ```bash
 curl -i -X POST http://localhost:8082/api/v1/casos \
   -H "Content-Type: application/json" \
-  -d '{"alunoId":1,"motivo":"TRANSPORTE","resumo":"Família informou que o aluno não tem dinheiro para a condução desde o início do mês.","agenteResponsavel":"Mariana Teixeira"}'
+  -d '{"alunoId":1,"motivo":"TRANSPORTE","resumo":"Familia informou que o aluno nao tem dinheiro para a conducao desde o inicio do mes.","agenteResponsavel":"Mariana Teixeira"}'
 ```
 
 Retorna `201 Created` com o header `Location`, encaminhamento `PASSE_LIVRE` e prioridade `NORMAL` sugeridos, e o aluno já com situação `EM_BUSCA_ATIVA`. Para conferir:
@@ -285,11 +296,11 @@ O aluno 8 passa para `EVADIDO`.
 ```bash
 # 404 - aluno inexistente
 curl -i -X POST http://localhost:8082/api/v1/casos -H "Content-Type: application/json" \
-  -d '{"alunoId":999,"motivo":"SAUDE","resumo":"Aluno com faltas frequentes por motivo de saúde.","agenteResponsavel":"Mariana Teixeira"}'
+  -d '{"alunoId":999,"motivo":"SAUDE","resumo":"Aluno com faltas frequentes por motivo de saude.","agenteResponsavel":"Mariana Teixeira"}'
 
 # 409 - aluno 2 já possui caso em andamento
 curl -i -X POST http://localhost:8082/api/v1/casos -H "Content-Type: application/json" \
-  -d '{"alunoId":2,"motivo":"SAUDE","resumo":"Aluno com faltas frequentes por motivo de saúde.","agenteResponsavel":"Mariana Teixeira"}'
+  -d '{"alunoId":2,"motivo":"SAUDE","resumo":"Aluno com faltas frequentes por motivo de saude.","agenteResponsavel":"Mariana Teixeira"}'
 
 # 409 - transição de status inválida (caso 1 está EM_CONTATO)
 curl -i -X PATCH http://localhost:8082/api/v1/casos/1/status -H "Content-Type: application/json" -d '{"status":"RESOLVIDO"}'
@@ -321,7 +332,7 @@ O caso é retornado sem os dados do aluno, com `"mensagem": "Dados do aluno temp
 
 ```bash
 curl -i -X POST http://localhost:8082/api/v1/casos -H "Content-Type: application/json" \
-  -d '{"alunoId":4,"motivo":"SAUDE","resumo":"Aluno com faltas frequentes por motivo de saúde.","agenteResponsavel":"Mariana Teixeira"}'
+  -d '{"alunoId":4,"motivo":"SAUDE","resumo":"Aluno com faltas frequentes por motivo de saude.","agenteResponsavel":"Mariana Teixeira"}'
 ```
 
 Retorna `503 Service Unavailable` e o caso **não** é gravado: a transação é desfeita, mantendo os dois bancos consistentes. Ao subir o ms-alunos novamente, o circuito volta a fechar depois do tempo de espera (30 s).
