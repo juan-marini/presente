@@ -335,7 +335,9 @@ curl -i -X POST http://localhost:8082/api/v1/casos -H "Content-Type: application
   -d '{"alunoId":4,"motivo":"SAUDE","resumo":"Aluno com faltas frequentes por motivo de saude.","agenteResponsavel":"Mariana Teixeira"}'
 ```
 
-Retorna `503 Service Unavailable` e o caso **não** é gravado: a transação é desfeita, mantendo os dois bancos consistentes. Ao subir o ms-alunos novamente, o circuito volta a fechar depois do tempo de espera (30 s).
+Retorna `503 Service Unavailable` e o caso **não** é gravado: a transação é desfeita, mantendo os dois bancos consistentes. Ao subir o ms-alunos novamente, o circuito volta a fechar depois do tempo de espera (50 s).
+
+Pare as instâncias com **Ctrl+C** no terminal (ou com o botão *Exit* do IntelliJ), para que elas saiam do registro do Eureka. Se uma instância for encerrada à força, ela pode continuar aparecendo no painel do Eureka; nesse caso, reinicie o eureka-server e aguarde os serviços se registrarem novamente.
 
 ## Testes de unidade
 
