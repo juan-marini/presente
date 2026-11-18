@@ -52,6 +52,9 @@ public class AlunoService {
 
     @Transactional
     public AlunoResponseDTO updateAluno(Long id, AlunoRequestDTO requestDTO) {
+        if (!alunoRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Aluno não encontrado. ID: " + id);
+        }
         if (alunoRepository.existsByMatriculaAndIdNot(requestDTO.getMatricula(), id)) {
             throw new DatabaseException("Já existe um aluno com a matrícula " + requestDTO.getMatricula());
         }

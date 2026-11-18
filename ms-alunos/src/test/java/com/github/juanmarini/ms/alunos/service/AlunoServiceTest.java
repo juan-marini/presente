@@ -51,6 +51,16 @@ class AlunoServiceTest {
     }
 
     @Test
+    void updateAlunoShouldThrowResourceNotFoundExceptionWhenIdDoesNotExist() {
+        Mockito.when(alunoRepository.existsById(nonExistingId)).thenReturn(false);
+
+        Assertions.assertThrows(ResourceNotFoundException.class,
+                () -> alunoService.updateAluno(nonExistingId, Factory.createAlunoRequestDTO()));
+
+        Mockito.verify(alunoRepository, Mockito.never()).save(Mockito.any(Aluno.class));
+    }
+
+    @Test
     void saveAlunoShouldReturnAlunoWithSituacaoRegularWhenDataIsValid() {
         Mockito.when(alunoRepository.existsByMatricula(aluno.getMatricula())).thenReturn(false);
         Mockito.when(alunoRepository.save(Mockito.any(Aluno.class))).thenReturn(aluno);
